@@ -8,7 +8,7 @@ public class Planet {
     public double yyVel; //Its current velocity in the y direction
     public double mass;  //Its mass
     public String imgFileName; //The name of the file that corresponds to the image that depicts the planet (for example, jupiter.gif)
-    public static final double g = 6.67e-11; //Java supports scientific notation
+    private static final double g = 6.67e-11; //Java supports scientific notation
 
     /**
      * The first constructor initialize an instance of the Planet class
