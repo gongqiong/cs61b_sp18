@@ -24,22 +24,22 @@ public class ArrayDeque<T> {
         size = 0;
     }
 
-    public int plusOne(int index) {
+    private int plusOne(int index) {
         return Math.floorMod(index + 1, items.length);
     }
 
-    public int plusOne(int index, int length) {
+    private int plusOne(int index, int length) {
         return Math.floorMod(index + 1, length);
     }
 
-    public int minusOne(int index) {
+    private int minusOne(int index) {
         return Math.floorMod(index - 1, items.length);
     }
 
     /**
      * Resizes the underlying array to the target capacity.
      */
-    public void resize() {
+    private void resize() {
         if (size == items.length) {
             expand();
         }
@@ -48,15 +48,15 @@ public class ArrayDeque<T> {
         }
     }
 
-    public void expand() {
+    private void expand() {
         resizeHelper(items.length * 2);
     }
 
-    public void reduce() {
+    private void reduce() {
         resizeHelper(items.length / 2);
     }
 
-    public void resizeHelper(int capacity) {
+    private void resizeHelper(int capacity) {
         int begin = plusOne(nextFirst);
         int end = minusOne(nextLast);
         T[] temp = items;
@@ -160,7 +160,7 @@ public class ArrayDeque<T> {
             return null;
         }
         int curr = 0;
-        index = Math.floorMod(plusOne(nextFirst)+index, items.length);
+        index = Math.floorMod(plusOne(nextFirst) + index, items.length);
         return items[index];
     }
 
@@ -169,14 +169,16 @@ public class ArrayDeque<T> {
      *
      * @param args
      */
+    /*
     public static void main(String[] args) {
         ArrayDeque<Integer> L = new ArrayDeque<>();
-        for (int i = 0; i<88;i++){
+        for (int i = 0; i < 88; i++) {
             L.addLast(i);
         }
-        for (int i = 0; i<80; i++){
+        for (int i = 0; i < 80; i++) {
             L.removeLast();
         }
         L.printDeque();
     }
+     */
 }
