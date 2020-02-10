@@ -4,26 +4,26 @@ import java.util.NoSuchElementException;
 /**
  * Isn't this solution kinda... cheating? Yes.
  */
-public class LinkedListDeque<Item> extends LinkedList<Item> implements Deque<Item> {
+public class LinkedListDeque<T> extends LinkedList<T> implements Deque<T> {
     public void printDeque() {
         System.out.println("dummy");
     }
-
-    public Item getRecursive(int i) {
+    
+    public T getRecursive(int i) {
         return get(i);
     }
-
+    
     @Override
-    public Item removeFirst() {
+    public T removeFirst() {
         try {
             return super.removeFirst();
         } catch (NoSuchElementException e) {
             return null;
         }
     }
-
+    
     @Override
-    public Item removeLast() {
+    public T removeLast() {
         try {
             return super.removeLast();
         } catch (NoSuchElementException e) {
