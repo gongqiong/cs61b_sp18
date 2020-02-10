@@ -8,7 +8,7 @@ public class TestPalindrome {
     static Palindrome palindrome = new Palindrome();
 
     @Test
-    public void TestWordToDeque() {
+    public void testWordToDeque() {
         Deque d = palindrome.wordToDeque("persiflage");
         String actual = "";
         for (int i = 0; i < "persiflage".length(); i++) {
@@ -18,7 +18,7 @@ public class TestPalindrome {
     }
 
     @Test
-    public void TestisPalindrome() {
+    public void testisPalindrome() {
         assertTrue(palindrome.isPalindrome(""));
         assertTrue(palindrome.isPalindrome("a"));
         assertTrue(palindrome.isPalindrome("noon"));
@@ -26,17 +26,17 @@ public class TestPalindrome {
     }
 
     @Test
-    public void TestisPalindromeByOne(){
+    public void testisPalindromeByOne() {
         OffByOne obo = new OffByOne();
         assertTrue(palindrome.isPalindrome("", obo));
         assertTrue(palindrome.isPalindrome("a", obo));
         assertFalse(palindrome.isPalindrome("aa", obo));
         assertTrue(palindrome.isPalindrome("flake", obo));
-        assertFalse(palindrome.isPalindrome("noon",obo));
+        assertFalse(palindrome.isPalindrome("noon", obo));
     }
 
     @Test
-    public void TestisPalindromeByN(){
+    public void testisPalindromeByN() {
         OffByN obn5 = new OffByN(5);
         assertTrue(palindrome.isPalindrome("", obn5));
         assertTrue(palindrome.isPalindrome("a", obn5));

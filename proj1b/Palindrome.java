@@ -37,7 +37,7 @@ public class Palindrome {
         } else if (d.removeFirst() != d.removeLast()) {
             return false;
         } else {
-            return true;
+            return isPalindromeHelper(d);
         }
     }
 
@@ -45,13 +45,14 @@ public class Palindrome {
         Deque d = wordToDeque(word);
         return isPalindromeHelper(d, cc);
     }
-    private boolean isPalindromeHelper(Deque d, CharacterComparator cc){
+
+    private boolean isPalindromeHelper(Deque d, CharacterComparator cc) {
         if (d.size() <= 1) {
             return true;
-        } else if (!cc.equalChars((char)d.removeFirst(), (char)d.removeLast())) {
+        } else if (!cc.equalChars((char) d.removeFirst(), (char) d.removeLast())) {
             return false;
         } else {
-            return true;
+            return isPalindromeHelper(d, cc);
         }
     }
 }
