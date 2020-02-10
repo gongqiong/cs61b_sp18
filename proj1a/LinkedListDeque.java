@@ -1,19 +1,28 @@
+/**
+ * RULES
+ * 1. add and remove operations must not involve any looping or recursion.
+ * A single such operation must take “constant time”.
+ * 2. get must use iteration, not recursion.
+ * 3. size must take constant time.
+ * 4. The amount of memory that your program uses at any given time must be
+ * proportional to the number of items.
+ */
 public class LinkedListDeque<T> {
     private class Node {
-        public Node prev;
-        public T item;
-        public Node next;
-
+        Node prev;
+        T item;
+        Node next;
+        
         public Node(Node p, T i, Node n) {
             prev = p;
             item = i;
             next = n;
         }
     }
-
+    
     private Node sentinel;
     private int size;
-
+    
     /**
      * Creates an empty linked list deque
      */
@@ -23,7 +32,7 @@ public class LinkedListDeque<T> {
         sentinel.next = sentinel;
         size = 0;
     }
-
+    
     /**
      * add x to the front of the list. No loop or recursion
      */
@@ -32,7 +41,7 @@ public class LinkedListDeque<T> {
         sentinel.next.next.prev = sentinel.next;
         size++;
     }
-
+    
     /**
      * add x to the end of the list.
      * No loop or recursion.
@@ -43,7 +52,7 @@ public class LinkedListDeque<T> {
         sentinel.prev = new Node(sentinel.prev, x, sentinel);
         sentinel.prev.prev.next = sentinel.prev;
     }
-
+    
     /**
      * Returns true if deque is empty, false otherwise.
      */
@@ -53,14 +62,14 @@ public class LinkedListDeque<T> {
         }
         return false;
     }
-
+    
     /**
      * Returns the number of items in the deque.
      */
     public int size() {
         return size;
     }
-
+    
     /**
      * Prints the items in the deque from first to last, separated by a space.
      */
@@ -72,7 +81,7 @@ public class LinkedListDeque<T> {
             System.out.print(" ");
         }
     }
-
+    
     /**
      * Removes and returns the item at the front of the deque. If no such item exists, returns null.
      */
@@ -86,7 +95,7 @@ public class LinkedListDeque<T> {
         sentinel.next.prev = sentinel;
         return res;
     }
-
+    
     /**
      * Removes and returns the item at the back of the deque. If no such item exists, returns null.
      */
@@ -100,7 +109,7 @@ public class LinkedListDeque<T> {
         sentinel.prev.next = sentinel;
         return res;
     }
-
+    
     /**
      * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      * If no such item exists, returns null. Must not alter the deque!
@@ -116,7 +125,7 @@ public class LinkedListDeque<T> {
         }
         return p.item;
     }
-
+    
     /* recursion*/
     /* a helper method*/
     private T getRecursiveHelper(int index, Node p) {
@@ -128,7 +137,7 @@ public class LinkedListDeque<T> {
             return getRecursiveHelper(index - 1, p.next);
         }
     }
-
+    
     public T getRecursive(int index) {
         return getRecursiveHelper(index, sentinel);
     }
