@@ -18,6 +18,23 @@ public class TestArrayRingBuffer {
         assertEquals(arb.fillCount, 1);
     }
     
+    @Test
+    public void isEmptyTest() {
+        ArrayRingBuffer<Integer> arb = new ArrayRingBuffer<>(10);
+        assertTrue(arb.isEmpty());
+    }
+    
+    @Test
+    public void iteratorTest() {
+        ArrayRingBuffer<Double> arb = new ArrayRingBuffer<>(10);
+        for (int i = 0; i < 10; i += 1) {
+            arb.enqueue(Math.random());
+        }
+        for (double i : arb) {
+            System.out.println(i);
+        }
+    }
+    
     /**
      * Calls tests for ArrayRingBuffer.
      */
