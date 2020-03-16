@@ -183,7 +183,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      **/
     @Override
     public V remove(K key, V value) {
-        size-=1;
+        size -= 1;
         V keyValue = get(key);
         if (keyValue != value) {
             return null;

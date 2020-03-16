@@ -68,8 +68,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public void put(K key, V value) {
         resize();
         if (get(key) != value) {
+            if (get(key) == null) {
+                size += 1;
+            }
             buckets[hash(key)].put(key, value);
-            size += 1;
         }
     }
     
@@ -129,7 +131,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         V keyValue = get(key);
         if (keyValue != value) {
             return null;
-        }else {
+        } else {
             buckets[hash(key)].remove(key);
         }
         return value;
