@@ -1,10 +1,12 @@
 package byog.Core;
 
-import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
-import java.util.*;
+import java.util.PriorityQueue;
+import java.util.Random;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class MapGenerator {
     private static final int WIDTH = Game.WIDTH;
@@ -32,7 +34,8 @@ public class MapGenerator {
         }
     }
     
-    private static void addNakedHallway(TETile[][] world, Position posA, Position posB, Random random) {
+    private static void addNakedHallway
+            (TETile[][] world, Position posA, Position posB, Random random) {
         if (posA.getX() == posB.getX()) { // vertical
             int x = posA.getX();
             int startY = Math.min(posA.getY(), posB.getY());
@@ -69,7 +72,8 @@ public class MapGenerator {
                     for (int[] neighbor : neighbors) {
                         int neighborX = x + neighbor[0];
                         int neighborY = y + neighbor[1];
-                        if (neighborX >= 0 && neighborX < WIDTH && neighborY >= 0 && neighborY < HEIGHT - 1
+                        if (neighborX >= 0 && neighborX < WIDTH
+                                && neighborY >= 0 && neighborY < HEIGHT - 1
                                 && world[neighborX][neighborY].equals(Tileset.FLOOR)) {
                             floorNeighbor += 1;
                         }

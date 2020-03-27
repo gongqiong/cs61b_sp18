@@ -33,7 +33,8 @@ public class BSSpace {
             Position rightPos = new Position(pos.getX() + leftWidth - 1, pos.getY());
             rightSpace = new BSSpace(width - leftWidth, height, rightPos);
         } else {
-            int bottomHeight = Math.max(MIN_SIZE, RandomUtils.uniform(random, height - MIN_SIZE + 1));
+            int bottomHeight = Math.max(MIN_SIZE,
+                    RandomUtils.uniform(random, height - MIN_SIZE + 1));
             leftSpace = new BSSpace(width, bottomHeight, pos);
             Position topPos = new Position(pos.getX(), pos.getY() + bottomHeight - 1);
             rightSpace = new BSSpace(width, height - bottomHeight, topPos);
@@ -51,7 +52,8 @@ public class BSSpace {
             Position start = new Position(pos.getX() + offsetX, pos.getY() + offsetY);
             int roomWidth = RandomUtils.uniform(random, width - offsetX - 1);
             int roomHeight = RandomUtils.uniform(random, height - offsetY - 1);
-            room = new Room(start, Math.max(MIN_SIZE - 2, roomWidth), Math.max(MIN_SIZE - 2, roomHeight));
+            room = new Room(start,
+                    Math.max(MIN_SIZE - 2, roomWidth), Math.max(MIN_SIZE - 2, roomHeight));
         }
     }
 }
