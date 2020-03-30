@@ -1,5 +1,6 @@
 package byog.Core;
 
+import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
@@ -51,7 +52,7 @@ public class MapGenerator {
                 world[x][y] = Tileset.FLOOR;
             }
         } else {
-            Boolean p = RandomUtils.bernoulli(random);
+            boolean p = RandomUtils.bernoulli(random);
             Position inflection;
             if (p) {
                 inflection = new Position(posA.getX(), posB.getY());
@@ -120,5 +121,17 @@ public class MapGenerator {
             rooms.add(bss.room);
         }
         return rooms;
+    }
+    
+    public static void main(String[] args) {
+        TERenderer ter = new TERenderer();
+        ter.initialize(WIDTH, HEIGHT);
+    
+        TETile[][] world = new TETile[WIDTH][HEIGHT];
+        Random rand = new Random(666);
+        MapGenerator mapG = new MapGenerator();
+        mapG.generateWorld(world, rand);
+        ter.renderFrame(world);
+    
     }
 }
