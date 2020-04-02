@@ -214,9 +214,8 @@ public class Game {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-        input.toLowerCase();
         char action = input.charAt(0);
-        long seed = Long.parseLong(input.split("[a-z]")[1]);
+        long seed = Long.parseLong(input.split("[a-zA-Z]")[1]);
         Random random = new Random(seed);
         ter.initialize(WIDTH, HEIGHT);
         TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
