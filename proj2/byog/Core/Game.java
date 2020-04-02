@@ -217,7 +217,6 @@ public class Game {
         char action = input.charAt(0);
         long seed = Long.parseLong(input.split("[a-zA-Z]")[1]);
         Random random = new Random(seed);
-        ter.initialize(WIDTH, HEIGHT);
         TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
         MapGenerator.generateWorld(finalWorldFrame, random);
         return finalWorldFrame;
