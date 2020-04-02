@@ -12,12 +12,39 @@ import java.util.LinkedList;
 public class MapGenerator {
     private static final int WIDTH = Game.WIDTH;
     private static final int HEIGHT = Game.HEIGHT;
+    private static Position playerPos;
     
-    public static void generateWorld(TETile[][] world, Random random) {
+    public static Position generateWorld(TETile[][] world, Random random) {
         setBackgroundAsWalls(world);  // fill the whole world with wall tiles.
         Queue<Room> rooms = generateRooms(world, random); // generate rooms.
         connectRooms(world, rooms, random); // connects rooms with hallways (no walls).
         removeWalls(world); // remove redundant walls.
+        playerPos = addPlayer(world, random);
+        addLockedDoor(world, random);
+        return playerPos;
+    }
+    
+    private static Position addPlayer(TETile[][] world, Random rand) {
+        while (true) {
+            int x = RandomUtils.uniform(rand, 1, WIDTH - 2);
+            int y = RandomUtils.uniform(rand, 1, HEIGHT - 2);
+            if (world[x][y].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.PLAYER;
+                return new Position(x, y);
+            }
+        }
+    }
+    
+    private static void addLockedDoor(TETile[][] world, Random rand) {
+        while (true) {
+            int x = RandomUtils.uniform(rand, 1, WIDTH - 2);
+            int y = RandomUtils.uniform(rand, 1, HEIGHT - 2);
+            if (world[x][y].equals(Tileset.WALL) && world[x][y + 1].equals(Tileset.FLOOR)
+                    && world[x][y + 2].equals(Tileset.FLOOR) && Math.abs(x + y - playerPos.getX() - playerPos.getY()) > HEIGHT) {
+                world[x][y] = Tileset.LOCKED_DOOR;
+                break;
+            }
+        }
     }
     
     private static void connectRooms(TETile[][] world, Queue<Room> rooms, Random random) {
@@ -126,12 +153,12 @@ public class MapGenerator {
     public static void main(String[] args) {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
-    
+        
         TETile[][] world = new TETile[WIDTH][HEIGHT];
         Random rand = new Random(666);
         MapGenerator mapG = new MapGenerator();
         mapG.generateWorld(world, rand);
         ter.renderFrame(world);
-    
+        
     }
 }

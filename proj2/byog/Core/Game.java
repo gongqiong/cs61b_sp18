@@ -2,6 +2,7 @@ package byog.Core;
 
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
+import byog.TileEngine.Tileset;
 import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.*;
@@ -9,13 +10,16 @@ import java.util.Random;
 
 
 public class Game {
+    public static Random rand;
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
     private static final int width = 40;
     private static final int height = 40;
-    private Random rand;
+    private boolean gameOver = false;
+    private boolean winTheGame = false;
+    private String record = "";
     
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -30,11 +34,10 @@ public class Game {
     }
     
     private void playGame(String input) {
-        input.toLowerCase();
         switch (input) {
             case "n":
                 menuType(3);
-                Long seed = Long.parseLong(getUserInput(100));
+                Long seed = Long.parseLong(getUserInput(20));
                 startNewGame(seed);
                 break;
             case "l":
@@ -50,16 +53,101 @@ public class Game {
     private void startNewGame(Long seed) {
         ter.initialize(WIDTH, HEIGHT);
         TETile[][] world = new TETile[WIDTH][HEIGHT];
-        
         rand = new Random(seed);
         MapGenerator mapG = new MapGenerator();
-        mapG.generateWorld(world, rand);
-        Font font = new Font("monaco", Font.PLAIN,16);
-        StdDraw.setFont(font);
-        String[] tile = {"locked door", "wall", "floor", "you"};
+        Position playerPos = mapG.generateWorld(world, rand);
         
-        StdDraw.text(1,height,tile[0]);
+        while (!gameOver) {
+            ter.renderFrame(world);
+            tileInfo(world);
+            if (!StdDraw.hasNextKeyTyped()) {
+                continue;
+            }
+            playerPos = move(world, getUserInput(1), playerPos);
+            if (winTheGame) {
+                winTheGame();
+                break;
+            }
+        }
+        
+    }
+    
+    private void winTheGame() {
+        if (winTheGame) {
+            StdDraw.pause(500);
+            StdDraw.clear(Color.black);
+            Font font = new Font("monaco", Font.BOLD, 30);
+            StdDraw.setFont(font);
+            StdDraw.setPenColor(Color.white);
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Congratulations! You win the game!");
+            StdDraw.show();
+        }
+    }
+    
+    private Position move(TETile[][] world, String action, Position playerPos) {
+        int x = playerPos.getX();
+        int y = playerPos.getY();
+        if (action.equals("w")) {
+            if (world[x][y + 1].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.FLOOR;
+                world[x][y + 1] = Tileset.PLAYER;
+                playerPos = new Position(x, y + 1);
+            }
+        }
+        if (action.equals("a")) {
+            if (world[x - 1][y].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.FLOOR;
+                world[x - 1][y] = Tileset.PLAYER;
+                playerPos = new Position(x - 1, y);
+            }
+            if (world[x - 1][y].equals(Tileset.LOCKED_DOOR)) {
+                world[x][y] = Tileset.FLOOR;
+                world[x - 1][y] = Tileset.UNLOCKED_DOOR;
+                playerPos = new Position(x - 1, y);
+                winTheGame = true;
+            }
+        }
+        if (action.equals("s")) {
+            if (world[x][y - 1].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.FLOOR;
+                world[x][y - 1] = Tileset.PLAYER;
+                playerPos = new Position(x, y - 1);
+            }
+            if (world[x][y - 1].equals(Tileset.LOCKED_DOOR)) {
+                world[x][y] = Tileset.FLOOR;
+                world[x][y - 1] = Tileset.UNLOCKED_DOOR;
+                playerPos = new Position(x, y - 1);
+                winTheGame = true;
+                
+            }
+        }
+        if (action.equals("d")) {
+            if (world[x + 1][y].equals(Tileset.FLOOR)) {
+                world[x][y] = Tileset.FLOOR;
+                world[x + 1][y] = Tileset.PLAYER;
+                playerPos = new Position(x + 1, y);
+            }
+            if (world[x + 1][y].equals(Tileset.LOCKED_DOOR)) {
+                world[x][y] = Tileset.FLOOR;
+                world[x + 1][y] = Tileset.UNLOCKED_DOOR;
+                playerPos = new Position(x + 1, y);
+                winTheGame = true;
+            }
+        }
         ter.renderFrame(world);
+        winTheGame();
+        return playerPos;
+    }
+    
+    private void tileInfo(TETile[][] world) {
+        Font font = new Font("monaco", Font.PLAIN, 16);
+        StdDraw.setFont(font);
+        StdDraw.setPenColor(Color.white);
+        int x = (int) StdDraw.mouseX();
+        int y = (int) StdDraw.mouseY();
+        String tile = world[x][y].description();
+        StdDraw.textLeft(1, HEIGHT - 1, tile);
+        StdDraw.show();
     }
     
     private String getUserInput(int n) {
@@ -69,11 +157,12 @@ public class Game {
                 continue;
             }
             char c = StdDraw.nextKeyTyped();
-            if (c == 's') {
+            if (res.length() > 1 && c == 's') {
                 break;
             }
             res += String.valueOf(c);
         }
+        res.toLowerCase();
         return res;
     }
     
