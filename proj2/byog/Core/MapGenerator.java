@@ -1,30 +1,36 @@
 package byog.Core;
 
-import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
+import java.io.Serializable;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Queue;
 import java.util.LinkedList;
 
-public class MapGenerator {
+public class MapGenerator implements Serializable {
+    private static final long serialVersionUID = 45498234798734234L;
+    
     private static final int WIDTH = Game.WIDTH;
     private static final int HEIGHT = Game.HEIGHT;
-    private static Position playerPos;
+    Position playerPos;
+    TETile[][] world;
     
-    public static Position generateWorld(TETile[][] world, Random random) {
+    public MapGenerator(){
+        world = new TETile[WIDTH][HEIGHT];
+    }
+    
+    public void generateWorld(Random random) {
         setBackgroundAsWalls(world);  // fill the whole world with wall tiles.
         Queue<Room> rooms = generateRooms(world, random); // generate rooms.
         connectRooms(world, rooms, random); // connects rooms with hallways (no walls).
         removeWalls(world); // remove redundant walls.
         playerPos = addPlayer(world, random);
         addLockedDoor(world, random);
-        return playerPos;
     }
     
-    private static Position addPlayer(TETile[][] world, Random rand) {
+    private Position addPlayer(TETile[][] world, Random rand) {
         while (true) {
             int x = RandomUtils.uniform(rand, 1, WIDTH - 2);
             int y = RandomUtils.uniform(rand, 1, HEIGHT - 2);
@@ -35,7 +41,7 @@ public class MapGenerator {
         }
     }
     
-    private static void addLockedDoor(TETile[][] world, Random rand) {
+    private void addLockedDoor(TETile[][] world, Random rand) {
         while (true) {
             int x = RandomUtils.uniform(rand, 1, WIDTH - 2);
             int y = RandomUtils.uniform(rand, 1, HEIGHT - 2);
@@ -47,7 +53,7 @@ public class MapGenerator {
         }
     }
     
-    private static void connectRooms(TETile[][] world, Queue<Room> rooms, Random random) {
+    private void connectRooms(TETile[][] world, Queue<Room> rooms, Random random) {
         Queue<Room> roomsInOrder = new PriorityQueue<>();
         for (Room room : rooms) {
             roomsInOrder.add(room);
@@ -62,7 +68,7 @@ public class MapGenerator {
         }
     }
     
-    private static void addNakedHallway
+    private void addNakedHallway
             (TETile[][] world, Position posA, Position posB, Random random) {
         if (posA.getX() == posB.getX()) { // vertical
             int x = posA.getX();
@@ -91,7 +97,7 @@ public class MapGenerator {
         }
     }
     
-    private static void removeWalls(TETile[][] world) {
+    private void removeWalls(TETile[][] world) {
         int[][] neighbors = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
         for (int x = 0; x < WIDTH; x += 1) {
             for (int y = 0; y < HEIGHT - 1; y += 1) {
@@ -114,7 +120,7 @@ public class MapGenerator {
         }
     }
     
-    private static void setBackgroundAsWalls(TETile[][] world) {
+    private void setBackgroundAsWalls(TETile[][] world) {
         for (int i = 0; i < WIDTH; i += 1) {
             for (int j = 0; j < HEIGHT; j += 1) {
                 if (j == HEIGHT - 1) {
@@ -126,7 +132,7 @@ public class MapGenerator {
         }
     }
     
-    private static Queue<Room> generateRooms(TETile[][] world, Random random) {
+    private Queue<Room> generateRooms(TETile[][] world, Random random) {
         Queue<Room> rooms = new LinkedList<>();
         Queue<BSSpace> bssQueue = new LinkedList<>();
         BSSpace root = new BSSpace(WIDTH, HEIGHT - 1, new Position(0, 0));
@@ -148,17 +154,5 @@ public class MapGenerator {
             rooms.add(bss.room);
         }
         return rooms;
-    }
-    
-    public static void main(String[] args) {
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-        
-        TETile[][] world = new TETile[WIDTH][HEIGHT];
-        Random rand = new Random(666);
-        MapGenerator mapG = new MapGenerator();
-        mapG.generateWorld(world, rand);
-        ter.renderFrame(world);
-        
     }
 }

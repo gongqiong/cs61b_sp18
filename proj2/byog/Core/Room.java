@@ -3,9 +3,12 @@ package byog.Core;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Room implements Comparable<Room> {
+public class Room implements Comparable<Room>, Serializable {
+    private static final long serialVersionUID = 123123123123123L;
+    
     private Position pos;
     private int width;
     private int height;

@@ -1,8 +1,11 @@
 package byog.Core;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class BSSpace {
+public class BSSpace implements Serializable {
+    private static final long serialVersionUID = 123123123123123L;
+    
     private static final int MIN_SIZE = 6;
     private int width;
     private int height;

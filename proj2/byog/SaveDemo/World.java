@@ -13,12 +13,12 @@ public class World implements Serializable {
     private static final long serialVersionUID = 123123123123123L;
     private List<Square> squares;
     private Random r = new Random();
-
-
+    
+    
     public World() {
         squares = new ArrayList<Square>();
     }
-
+    
     public void addRandomSquare() {
         double x = RandomUtils.uniform(r, 0, 1.0);
         double y = RandomUtils.uniform(r, 0, 1.0);
@@ -30,7 +30,7 @@ public class World implements Serializable {
         Square newSquare = new Square(x, y, size, c);
         squares.add(newSquare);
     }
-
+    
     public void draw() {
         for (int i = 0; i < squares.size(); i += 1) {
             squares.get(i).draw();

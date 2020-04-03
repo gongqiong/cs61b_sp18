@@ -6,6 +6,7 @@ import byog.TileEngine.Tileset;
 import edu.princeton.cs.introcs.StdDraw;
 
 import java.awt.*;
+import java.io.*;
 import java.util.Random;
 
 
@@ -19,7 +20,7 @@ public class Game {
     private static final int height = 40;
     private boolean gameOver = false;
     private boolean winTheGame = false;
-    private String record = "";
+    private boolean playWithKeyboard = true;
     
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -41,35 +42,84 @@ public class Game {
                 startNewGame(seed);
                 break;
             case "l":
+                // if a world has been saved before, we first load it.
+                MapGenerator mapG = loadMapGenerator();
+                
+                takeAction(mapG);
                 break;
             case "q":
-                break;
+                System.exit(0);
             default:
                 menuType(2);
                 playGame(getUserInput(1));
         }
     }
     
+    private MapGenerator loadMapGenerator() {
+        File f = new File("./mapGenerator.ser");
+        try {
+            if (f.exists()) {
+                FileInputStream fs = new FileInputStream(f);
+                ObjectInputStream os = new ObjectInputStream(fs);
+                MapGenerator mapG = (MapGenerator) os.readObject();
+                return mapG;
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("class not found");
+            System.exit(0);
+        } catch (FileNotFoundException e) {
+            System.out.println("file not found");
+            System.exit(0);
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(0);
+        }
+        return new MapGenerator();
+    }
+    
+    private void saveMapGenerator(MapGenerator mapG) {
+        File f = new File("./mapGenerator.ser");
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            FileOutputStream fs = new FileOutputStream(f);
+            ObjectOutputStream os = new ObjectOutputStream(fs);
+            os.writeObject(mapG);
+            os.close();
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(0);
+        }
+    }
+    
     private void startNewGame(Long seed) {
-        ter.initialize(WIDTH, HEIGHT);
-        TETile[][] world = new TETile[WIDTH][HEIGHT];
         rand = new Random(seed);
         MapGenerator mapG = new MapGenerator();
-        Position playerPos = mapG.generateWorld(world, rand);
+        mapG.generateWorld(rand);
+        takeAction(mapG);
+    }
+    
+    private void takeAction(MapGenerator mapG) {
+        ter.initialize(WIDTH, HEIGHT);
         
         while (!gameOver) {
-            ter.renderFrame(world);
-            tileInfo(world);
+            ter.renderFrame(mapG.world);
+            tileInfo(mapG.world);
             if (!StdDraw.hasNextKeyTyped()) {
                 continue;
             }
-            playerPos = move(world, getUserInput(1), playerPos);
+            String action = getUserInput(1);
+            if (action.equals(":") && getUserInput(1).equals("q")) {
+                saveMapGenerator(mapG);
+                System.exit(0);
+            }
+            mapG.playerPos = move(mapG.world, action, mapG.playerPos);
             if (winTheGame) {
                 winTheGame();
                 break;
             }
         }
-        
     }
     
     private void winTheGame() {
@@ -134,8 +184,10 @@ public class Game {
                 winTheGame = true;
             }
         }
-        ter.renderFrame(world);
-        winTheGame();
+        if (playWithKeyboard) {
+            ter.renderFrame(world);
+            winTheGame();
+        }
         return playerPos;
     }
     
@@ -173,7 +225,8 @@ public class Game {
                 StdDraw.text(width / 2, height / 4, "Press your choice please");
                 break;
             case 2:
-                StdDraw.text(width / 2, height / 4, "Press your choice correctly: N, L or Q");
+                StdDraw.text(width / 2, height / 4,
+                        "Press your choice correctly: N, L or Q");
                 break;
             case 3:
                 StdDraw.text(width / 2, height / 4,
@@ -214,11 +267,46 @@ public class Game {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
+        playWithKeyboard = false;
         char action = input.charAt(0);
-        long seed = Long.parseLong(input.split("[a-zA-Z]")[1]);
-        Random random = new Random(seed);
-        TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
-        MapGenerator.generateWorld(finalWorldFrame, random);
-        return finalWorldFrame;
+        MapGenerator mapG = new MapGenerator();
+        switch (action) {
+            case 'N':
+                long seed = Long.parseLong(input.split("[a-zA-Z]")[1]);
+                String moves = input.split("[\\d]+")[1];
+                mapG = playNewGame(seed);
+                mapG = move(mapG, moves);
+                break;
+            case 'L':
+                mapG = loadMapGenerator();
+                mapG = move(mapG, input);
+                break;
+            default:
+        }
+        return mapG.world;
+    }
+    
+    private MapGenerator move(MapGenerator mapG, String moves) {
+        boolean saveTheGame = false;
+        if (moves.split(":").length != 1) {
+            moves = moves.split(":")[0];
+            saveTheGame = true;
+        }
+        for (int i = 0; i < moves.length(); i += 1) {
+            String moveStep = "";
+            moveStep += moves.charAt(i);
+            mapG.playerPos = move(mapG.world, moveStep.toLowerCase(), mapG.playerPos);
+        }
+        if (saveTheGame) {
+            saveMapGenerator(mapG);
+        }
+        return mapG;
+    }
+    
+    private MapGenerator playNewGame(Long seed) {
+        Random rand = new Random(seed);
+        MapGenerator mapG = new MapGenerator();
+        mapG.generateWorld(rand);
+        return mapG;
     }
 }
