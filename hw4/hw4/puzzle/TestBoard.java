@@ -23,5 +23,10 @@ public class TestBoard {
 
         x[1][1] = 1000;
         assertEquals("Your Board class is mutable and you should be making a copy of the values in the passed tiles array. Please see the FAQ!", 3, b.tileAt(1, 1));
+    
+        int hamming = b.hamming();
+        assertEquals("hamming distance error.", 3,hamming);
+        int manhattan = b.manhattan();
+        assertEquals("manhattan distance error.",4,manhattan);
     }
 } 
