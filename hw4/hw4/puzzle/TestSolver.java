@@ -1,4 +1,5 @@
 package hw4.puzzle;
+
 import edu.princeton.cs.algs4.In;
 import org.junit.Test;
 
@@ -16,18 +17,20 @@ public class TestSolver {
         final String name;
         final Board board;
         final int numMoves;
+        
         public BoardPuzzleSolution(String n, Board b, int m) {
             name = n;
             board = b;
             numMoves = m;
         }
     }
-
+    
     public static class WordPuzzleSolution {
         final String start;
         final String goal;
         final int numMoves;
         final List<String> possibleSolution;
+        
         public WordPuzzleSolution(String s, String g, int m, List<String> ps) {
             start = s;
             goal = g;
@@ -35,14 +38,15 @@ public class TestSolver {
             possibleSolution = ps;
         }
     }
-
-    /** Takes as input a word puzzle string and returns a WordPuzzle
-     *  object. For example, "kept, tent, kept-kent-tent, 13"
-     *  would return a WordPuzzle with start = kept, goal = tent,
-     *  numMoves = 2, and possible solution {"kept", "kent", "tent"}.
-     *  The last value is not used by this class, and indicates
-     *  the number of enqueues used by the reference solution to
-     *  solve the puzzle. Returns null if String isn't a valid word puzzle.
+    
+    /**
+     * Takes as input a word puzzle string and returns a WordPuzzle
+     * object. For example, "kept, tent, kept-kent-tent, 13"
+     * would return a WordPuzzle with start = kept, goal = tent,
+     * numMoves = 2, and possible solution {"kept", "kent", "tent"}.
+     * The last value is not used by this class, and indicates
+     * the number of enqueues used by the reference solution to
+     * solve the puzzle. Returns null if String isn't a valid word puzzle.
      */
     public static WordPuzzleSolution stringToWordPuzzle(String wp) {
         try {
@@ -80,9 +84,9 @@ public class TestSolver {
     }
     
      */
- 
-
-     public static Board readBoard(String filename) {
+    
+    
+    public static Board readBoard(String filename) {
         In in = new In(filename);
         int N = in.readInt();
         int[][] tiles = new int[N][N];
@@ -94,7 +98,7 @@ public class TestSolver {
         Board start = new Board(tiles);
         return start;
     }
-
+    
     @Test(timeout = 1000)
     public void test2x2BoardPuzzles() {
         for (int i = 0; i <= 6; i += 1) {
@@ -107,10 +111,10 @@ public class TestSolver {
             assertEquals("Wrong number of moves on " + puzzleName, bps.numMoves, s.moves());
         }
     }
-
+    
     @Test(timeout = 40000)
     public void test3x3BoardPuzzles() {
-        for (int i = 21; i <= 21; i += 1) {
+        for (int i = 0; i <= 30; i += 1) {
             String pnum = String.format("%02d", i);
             String puzzleName = "input/puzzle3x3-" + pnum + ".txt";
             Board b = readBoard(puzzleName);
@@ -120,7 +124,7 @@ public class TestSolver {
             assertEquals("Wrong number of moves on " + puzzleName, bps.numMoves, s.moves());
         }
     }
-
+    
     @Test(timeout = 20000)
     public void test4x4BoardPuzzles() {
         for (int i = 0; i <= 30; i += 1) {
@@ -133,7 +137,7 @@ public class TestSolver {
             assertEquals("Wrong number of moves on " + puzzleName, bps.numMoves, s.moves());
         }
     }
-
+    
     @Test(timeout = 20000)
     public void testVariousPuzzles() {
         for (int i = 0; i <= 31; i += 1) {

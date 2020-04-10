@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.Queue;
 public class Board implements WorldState {
     private int[][] tiles;
     private int width;
-    private int estimatedDistanceToGoal=-1;
+    private int estimatedDistanceToGoal = -1;
     private Queue<WorldState> neighbors = new Queue<>();
     
     /**
@@ -44,7 +44,7 @@ public class Board implements WorldState {
      */
     @Override
     public Iterable<WorldState> neighbors() {
-        if (neighbors.size()>0){
+        if (neighbors.size() > 0) {
             return neighbors;
         }
         int[][] tilesCopy = new int[width][width];
@@ -85,7 +85,7 @@ public class Board implements WorldState {
         estimatedDistanceToGoal = 0;
         for (int i = 0; i < width; i += 1) {
             for (int j = 0; j < width; j += 1) {
-                if (tileAt(i, j) != 0 && tileAt(i, j) != 3 * i + j + 1) {
+                if (tileAt(i, j) != 0 && tileAt(i, j) != width * i + j + 1) {
                     estimatedDistanceToGoal += 1;
                 }
             }
@@ -104,7 +104,7 @@ public class Board implements WorldState {
             for (int j = 0; j < width; j += 1) {
                 int actualValue = tileAt(i, j);
                 if (actualValue != 0) {
-                    int x = (actualValue-1)/width;
+                    int x = (actualValue - 1) / width;
                     int y = actualValue - width * x - 1;
                     estimatedDistanceToGoal += Math.abs(x - i) + Math.abs(y - j);
                 }
@@ -119,21 +119,21 @@ public class Board implements WorldState {
      */
     @Override
     public int estimatedDistanceToGoal() {
-        if (estimatedDistanceToGoal>=0){
+        if (estimatedDistanceToGoal >= 0) {
             return estimatedDistanceToGoal;
         }
-        estimatedDistanceToGoal= manhattan();
+        estimatedDistanceToGoal = manhattan();
         return estimatedDistanceToGoal;
     }
     
     /**
      * Returns true if this board's tile values are the same position as y's
      */
-    public boolean equals(Board y) {
-        if (this == y){
+    public boolean equals(Object y) {
+        if (this == y) {
             return true;
         }
-        if (y == null || y.getClass()!=this.getClass()){
+        if (y == null || y.getClass() != this.getClass()) {
             return false;
         }
         Board yBoard = (Board) y;

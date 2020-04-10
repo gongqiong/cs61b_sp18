@@ -1,5 +1,7 @@
 package hw4.puzzle;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class TestBoard {
@@ -20,13 +22,25 @@ public class TestBoard {
         assertEquals("Your Board class is not being initialized with the right values.", 1, b.tileAt(0, 1));
         assertEquals("Your Board class is not being initialized with the right values.", 2, b.tileAt(1, 0));
         assertEquals("Your Board class is not being initialized with the right values.", 3, b.tileAt(1, 1));
-
+        
         x[1][1] = 1000;
         assertEquals("Your Board class is mutable and you should be making a copy of the values in the passed tiles array. Please see the FAQ!", 3, b.tileAt(1, 1));
-    
+        
         int hamming = b.hamming();
-        assertEquals("hamming distance error.", 3,hamming);
+        assertEquals("hamming distance error.", 3, hamming);
         int manhattan = b.manhattan();
-        assertEquals("manhattan distance error.",4,manhattan);
+        assertEquals("manhattan distance error.", 4, manhattan);
+    }
+    
+    @Test
+    public void testHamming(){
+        int n = 2;
+        int[][] x = new int[n][n];
+        x[0][0] = 0;
+        x[0][1] = 1;
+        x[1][0] = 3;
+        x[1][1] = 2;
+        Board b = new Board(x);
+        assertEquals("hamming distance error.", 2,b.hamming());
     }
 } 

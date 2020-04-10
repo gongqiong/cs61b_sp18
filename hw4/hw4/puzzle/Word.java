@@ -11,19 +11,19 @@ public class Word implements WorldState {
     private final String word;
     private final String goal;
     private int estimatedDistanceToGoal = -1;
-
+    
     /**
      * Reads the wordfile specified by the wordfile variable.
      */
     private void readWords() {
         words = new HashSet<String>();
-
+        
         In in = new In(WORDFILE);
         while (!in.isEmpty()) {
             words.add(in.readString());
         }
     }
-
+    
     /**
      * Creates a new Word.
      */
@@ -32,19 +32,19 @@ public class Word implements WorldState {
         if (words == null) {
             readWords();
         }
-
+        
         if (!words.contains(w)) {
             throw new IllegalArgumentException("Invalid word: " + w);
         }
-
+        
         if (!words.contains(g)) {
             throw new IllegalArgumentException("Invalid goal: " + g);
         }
-
+        
         word = w;
         goal = g;
     }
-
+    
     /**
      * Computes the edit distance between a and b. From
      * https://rosettacode.org/wiki/Levenshtein_distance.
@@ -63,15 +63,15 @@ public class Word implements WorldState {
             int nw = i - 1;
             for (int j = 1; j <= b.length(); j++) {
                 int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]),
-                         a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
+                        a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
                 nw = costs[j];
                 costs[j] = cj;
             }
         }
         return costs[b.length()];
     }
-
-
+    
+    
     @Override
     public Iterable<WorldState> neighbors() {
         Set<WorldState> neighbs = new HashSet<>();
@@ -82,20 +82,20 @@ public class Word implements WorldState {
         }
         return neighbs;
     }
-
+    
     @Override
     public int estimatedDistanceToGoal() {
-        if (estimatedDistanceToGoal>0){
+        if (estimatedDistanceToGoal > 0) {
             return estimatedDistanceToGoal;
         }
         return editDistance(this.word, goal);
     }
-
+    
     @Override
     public String toString() {
         return word;
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -104,15 +104,15 @@ public class Word implements WorldState {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+        
         Word word1 = (Word) o;
-
+        
         if (word != null ? !word.equals(word1.word) : word1.word != null) {
             return false;
         }
         return goal != null ? goal.equals(word1.goal) : word1.goal == null;
     }
-
+    
     @Override
     public int hashCode() {
         int result = word != null ? word.hashCode() : 0;

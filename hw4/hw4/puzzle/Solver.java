@@ -1,7 +1,6 @@
 package hw4.puzzle;
 
 import edu.princeton.cs.algs4.MinPQ;
-import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -85,7 +84,7 @@ public class Solver {
      */
     public Iterable<WorldState> solution() {
         List<WorldState> solution = new LinkedList<>();
-        while (!paths.isEmpty()){
+        while (!paths.isEmpty()) {
             solution.add(paths.pop());
         }
         return solution;
