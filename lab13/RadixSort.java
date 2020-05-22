@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Class for doing Radix sort
@@ -26,7 +28,7 @@ public class RadixSort {
         String[] sortA = Arrays.copyOf(asciis, asciis.length);
         
         for (int i = numDigits - 1; i >= 0; i -= 1) {
-            sortA = sortHelperLSD(sortA, i);
+            sortHelperLSD(sortA, i);
         }
         return sortA;
     }
@@ -38,8 +40,9 @@ public class RadixSort {
      * @param asciis Input array of Strings
      * @param index  The position to sort the Strings on.
      */
-    private static String[] sortHelperLSD(String[] asciis, int index) {
+    private static void sortHelperLSD(String[] asciis, int index) {
         // Optional LSD helper method for required LSD radix sort
+        /*
         int[] counts = new int[R + 1];
         String[] sort = new String[asciis.length];
         for (String s : asciis) {
@@ -66,7 +69,29 @@ public class RadixSort {
                 starts[c + 1] += 1;
             }
         }
-        return sort;
+        System.arraycopy(sort,0,asciis,0,sort.length);
+         */
+        Queue<String>[] charToString = new Queue[R];
+        String[] sorted = new String[asciis.length];
+        for (int i = 0; i < R; i++) {
+            charToString[i] = new LinkedList();
+        }
+        for (String s : asciis) {
+            if (index > s.length() - 1) {
+                charToString[0].add(s);
+            } else {
+                int place = s.charAt(index);
+                charToString[place].add(s);
+            }
+        }
+        int i = 0;
+        for (Queue<String> strings: charToString){
+            for (String s: strings){
+                sorted[i] =s;
+                i+=1;
+            }
+        }
+        System.arraycopy(sorted,0,asciis,0,sorted.length);
     }
     
     /**
