@@ -24,10 +24,9 @@ public class RadixSort {
             numDigits = Math.max(numDigits, asciis[i].length());
         }
         String[] sortA = Arrays.copyOf(asciis, asciis.length);
-        ;
         
         for (int i = numDigits - 1; i >= 0; i -= 1) {
-            sortHelperLSD(sortA, i);
+            sortA = sortHelperLSD(sortA, i);
         }
         return sortA;
     }
@@ -39,7 +38,7 @@ public class RadixSort {
      * @param asciis Input array of Strings
      * @param index  The position to sort the Strings on.
      */
-    private static void sortHelperLSD(String[] asciis, int index) {
+    private static String[] sortHelperLSD(String[] asciis, int index) {
         // Optional LSD helper method for required LSD radix sort
         int[] counts = new int[R + 1];
         String[] sort = new String[asciis.length];
@@ -56,6 +55,7 @@ public class RadixSort {
         for (int i = 1; i < starts.length; i += 1) {
             starts[i] = starts[i - 1] + counts[i - 1];
         }
+        
         for (String s : asciis) {
             if (index > s.length() - 1) {
                 sort[starts[0]] = s;
@@ -66,7 +66,7 @@ public class RadixSort {
                 starts[c + 1] += 1;
             }
         }
-        System.arraycopy(sort, 0, asciis, 0, sort.length);
+        return sort;
     }
     
     /**

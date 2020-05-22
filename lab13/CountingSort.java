@@ -98,27 +98,32 @@ public class CountingSort {
                 k += 1;
             }
         }
-        
          */
         int[] count = new int[max - min + 1];
         for (int i : arr) {
-            count[i - min]++;
+            count[i - min] += 1;
         }
-    
-        int[] starts = new int[max - min + 1];
-        int pos = 0;
-        for (int i = 0; i < starts.length; i += 1) {
-            starts[i] = pos;
-            pos += count[i];
+        int[] sorted = new int[arr.length];
+        int k = 0;
+        for (int i = 0; i<count.length;i+=1){
+            for (int j =0; j<count[i]; j+=1,k+=1){
+                sorted[k] = i+min;
+            }
         }
-    
-        int[] sorted2 = new int[arr.length];
-        for (int i = 0; i < arr.length; i += 1) {
+        /*
+        int[] start = new int[max - min + 1];
+        start[0] = 0;
+        for (int i = 1; i < start.length; i += 1) {
+            start[i] = start[i - 1] + count[i - 1];
+        }
+        int[] sorted = new int[arr.length];
+        for (int i = 0; i<sorted.length;i+=1){
             int item = arr[i];
-            int place = starts[item - min];
-            sorted2[place] = item;
-            starts[item - min] += 1;
+            int index = start[item-min];
+            sorted[index] = item;
+            start[item-min] +=1;
         }
-        return sorted2;
+         */
+        return sorted;
     }
 }

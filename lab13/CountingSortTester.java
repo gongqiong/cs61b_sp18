@@ -53,10 +53,8 @@ public class CountingSortTester {
         assertIsSorted(sortedSomeNegative);
     }
 
-/*
+
     public static void main(String[] args) {
         jh61b.junit.TestRunner.runTests(CountingSortTester.class);
     }
-    
- */
 }
