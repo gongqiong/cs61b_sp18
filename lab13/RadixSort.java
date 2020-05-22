@@ -71,9 +71,8 @@ public class RadixSort {
         }
         System.arraycopy(sort,0,asciis,0,sort.length);
          */
-        Queue<String>[] charToString = new Queue[R];
-        String[] sorted = new String[asciis.length];
-        for (int i = 0; i < R; i++) {
+        Queue<String>[] charToString = new Queue[R+1];
+        for (int i = 0; i < R+1; i++) {
             charToString[i] = new LinkedList();
         }
         for (String s : asciis) {
@@ -81,17 +80,16 @@ public class RadixSort {
                 charToString[0].add(s);
             } else {
                 int place = s.charAt(index);
-                charToString[place].add(s);
+                charToString[place+1].add(s);
             }
         }
         int i = 0;
         for (Queue<String> strings: charToString){
             for (String s: strings){
-                sorted[i] =s;
+                asciis[i] =s;
                 i+=1;
             }
         }
-        System.arraycopy(sorted,0,asciis,0,sorted.length);
     }
     
     /**
