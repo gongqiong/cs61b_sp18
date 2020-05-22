@@ -73,6 +73,7 @@ public class CountingSort {
             max = Math.max(max, i);
             min = Math.min(min, i);
         }
+        /*
         int countsLen = Math.max(Math.abs(max), Math.abs(min)) + 1;
         int[] counts = new int[countsLen];
         int[] countsNeg = new int[countsLen];
@@ -97,6 +98,27 @@ public class CountingSort {
                 k += 1;
             }
         }
-        return sorted;
+        
+         */
+        int[] count = new int[max - min + 1];
+        for (int i : arr) {
+            count[i - min]++;
+        }
+    
+        int[] starts = new int[max - min + 1];
+        int pos = 0;
+        for (int i = 0; i < starts.length; i += 1) {
+            starts[i] = pos;
+            pos += count[i];
+        }
+    
+        int[] sorted2 = new int[arr.length];
+        for (int i = 0; i < arr.length; i += 1) {
+            int item = arr[i];
+            int place = starts[item - min];
+            sorted2[place] = item;
+            starts[item - min] += 1;
+        }
+        return sorted2;
     }
 }
