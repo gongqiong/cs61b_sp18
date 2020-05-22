@@ -6,6 +6,8 @@ import java.util.Arrays;
  * @author Akhil Batra, Alexander Hwang
  */
 public class RadixSort {
+    private static final int R = 256;
+    
     /**
      * Does LSD radix sort on the passed in array with the following restrictions:
      * The array can only have ASCII Strings (sequence of 1 byte characters)
@@ -21,10 +23,11 @@ public class RadixSort {
         for (int i = 0; i < asciis.length; i += 1) {
             numDigits = Math.max(numDigits, asciis[i].length());
         }
-        String[] sortA = Arrays.copyOf(asciis, asciis.length);;
+        String[] sortA = Arrays.copyOf(asciis, asciis.length);
+        ;
         
         for (int i = numDigits - 1; i >= 0; i -= 1) {
-            sortA = sortHelperLSD(sortA, i);
+            sortHelperLSD(sortA, i);
         }
         return sortA;
     }
@@ -36,19 +39,19 @@ public class RadixSort {
      * @param asciis Input array of Strings
      * @param index  The position to sort the Strings on.
      */
-    private static String[] sortHelperLSD(String[] asciis, int index) {
+    private static void sortHelperLSD(String[] asciis, int index) {
         // Optional LSD helper method for required LSD radix sort
-        int[] counts = new int[27];
+        int[] counts = new int[R + 1];
         String[] sort = new String[asciis.length];
         for (String s : asciis) {
             if (index > s.length() - 1) {
                 counts[0] += 1;
             } else {
-                char c = s.charAt(index);
-                counts[c - 'a' + 1] += 1;
+                int c = s.charAt(index);
+                counts[c + 1] += 1;
             }
         }
-        int[] starts = new int[27];
+        int[] starts = new int[R + 1];
         starts[0] = 0;
         for (int i = 1; i < starts.length; i += 1) {
             starts[i] = starts[i - 1] + counts[i - 1];
@@ -58,12 +61,12 @@ public class RadixSort {
                 sort[starts[0]] = s;
                 starts[0] += 1;
             } else {
-                char c = s.charAt(index);
-                sort[starts[c - 'a' + 1]] = s;
-                starts[c - 'a' + 1] += 1;
+                int c = s.charAt(index);
+                sort[starts[c + 1]] = s;
+                starts[c + 1] += 1;
             }
         }
-        return sort;
+        System.arraycopy(sort, 0, asciis, 0, sort.length);
     }
     
     /**
@@ -78,5 +81,10 @@ public class RadixSort {
     private static void sortHelperMSD(String[] asciis, int start, int end, int index) {
         // Optional MSD helper method for optional MSD radix sort
         return;
+    }
+    
+    public static void main(String[] args) {
+        int i = 'a';
+        System.out.println(i);
     }
 }
