@@ -57,13 +57,13 @@ public class Rasterer {
         double queryWidth = params.get("w");
         boolean querySuccess = true;
         if (queryUllon > queryLrlon || queryUllat < queryLrlat
-                || queryUllon>ROOT_LRLON || queryLrlon<ROOT_ULLON
-                || queryUllat<ROOT_LRLAT || queryLrlat>ROOT_ULLAT){
+                || queryUllon > ROOT_LRLON || queryLrlon < ROOT_ULLON
+                || queryUllat < ROOT_LRLAT || queryLrlat > ROOT_ULLAT) {
             querySuccess = false;
         }
         results.put("query_success", querySuccess);
         
-        if (!querySuccess){
+        if (!querySuccess) {
             return results;
         }
         

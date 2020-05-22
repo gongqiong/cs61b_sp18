@@ -63,14 +63,14 @@ public class Router {
         fringe.add(sVertex);
         while (!fringe.isEmpty()) {
             long v = fringe.remove().id;
-            marked.add(v);
+            if (marked.contains(v)) {
+                continue;
+            }
             if (v == t) {
                 break;
             }
+            marked.add(v);
             for (long w : g.adjacent(v)) {
-                if (marked.contains(w)) {
-                    continue;
-                }
                 double dis = bestDis.get(v) + g.distance(v, w);
                 if (bestDis.get(w) == null || (bestDis.get(w) != null && bestDis.get(w) > dis)) {
                     bestDis.put(w, dis);
