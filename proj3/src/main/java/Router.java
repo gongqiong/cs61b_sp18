@@ -1,4 +1,10 @@
-import java.util.*;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.List;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +54,7 @@ public class Router {
         Map<Long, Double> bestDis = new HashMap<>();
         Map<Long, Long> bestRout = new HashMap<>();
         PriorityQueue<Vertex> fringe = new PriorityQueue<>();
+        List<Long> marked = new ArrayList<>();
         
         long s = g.closest(stlon, stlat);
         long t = g.closest(destlon, destlat);
@@ -56,10 +63,14 @@ public class Router {
         fringe.add(sVertex);
         while (!fringe.isEmpty()) {
             long v = fringe.remove().id;
+            marked.add(v);
             if (v == t) {
                 break;
             }
             for (long w : g.adjacent(v)) {
+                if (marked.contains(w)) {
+                    continue;
+                }
                 double dis = bestDis.get(v) + g.distance(v, w);
                 if (bestDis.get(w) == null || (bestDis.get(w) != null && bestDis.get(w) > dis)) {
                     bestDis.put(w, dis);
@@ -73,7 +84,7 @@ public class Router {
         res.add(t);
         long curr = t;
         while (curr != s) {
-            curr = bestRout.get(curr);
+            curr = bestRout.get(curr); //FIXME NullPointerException
             res.addFirst(curr);
         }
         return res; // DONE FIXME
@@ -108,12 +119,12 @@ public class Router {
                 dis += g.distance(v, lastNode);
             } else {
                 startNewWay = true;
-                addNavigationDirection(direction,lastWay,dis,res);
+                addNavigationDirection(direction, lastWay, dis, res);
                 direction = getDirection(g, v, lastNode); //TODO special case
                 dis = g.distance(v, lastNode);
             }
             if (i == route.size() - 1) {
-                addNavigationDirection(direction,lastWay,dis,res);
+                addNavigationDirection(direction, lastWay, dis, res);
             }
             lastNode = v;
             preWay = way;
@@ -122,7 +133,7 @@ public class Router {
     }
     
     private static void addNavigationDirection(int direction, String lastWay,
-                                               double dis, List<NavigationDirection> res){
+                                               double dis, List<NavigationDirection> res) {
         NavigationDirection s = new NavigationDirection();
         s.direction = direction;
         s.way = lastWay;

@@ -1,6 +1,5 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Arrays;
 
 /**
  * This class provides all code necessary to take a query box and produce

@@ -6,7 +6,12 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.*;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.HashMap;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -66,7 +71,7 @@ public class GraphDB {
         nodes.put(n.id, n);
     }
     
-    List<String> getWay(long v){
+    List<String> getWay(long v) {
         return nodes.get(v).ways;
     }
     
@@ -79,7 +84,8 @@ public class GraphDB {
         Way(long id) {
             this.id = id;
         }
-        void setName(String name){
+        
+        void setName(String name) {
             this.name = name;
         }
         
