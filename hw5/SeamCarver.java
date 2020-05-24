@@ -7,7 +7,7 @@ public class SeamCarver {
     private boolean horizontal = false;
     
     public SeamCarver(Picture picture) {
-        this.picture = picture;
+        this.picture = new Picture(picture);
     }
     
     // current picture
