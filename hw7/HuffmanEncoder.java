@@ -1,5 +1,3 @@
-import edu.princeton.cs.algs4.StdOut;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,12 +25,12 @@ public class HuffmanEncoder {
         Integer count = inputSymbols.length;
         ow.writeObject(count);
         Map<Character, BitSequence> lookUpTable = decodeTrie.buildLookupTable();
-        List<BitSequence> BitSequenceList = new ArrayList<>();
+        List<BitSequence> bitSequenceList = new ArrayList<>();
         for (char c : inputSymbols) {
             BitSequence seq = lookUpTable.get(c);
-            BitSequenceList.add(seq);
+            bitSequenceList.add(seq);
         }
-        BitSequence hugSeq = BitSequence.assemble(BitSequenceList);
+        BitSequence hugSeq = BitSequence.assemble(bitSequenceList);
         ow.writeObject(hugSeq);
     }
 }
