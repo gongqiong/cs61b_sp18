@@ -9,7 +9,6 @@ public class Boggle {
     
     // File path of dictionary file
     static String dictPath = "words.txt";
-    
     static Trie trie;
     
     public static Trie getTrie() {
@@ -25,7 +24,7 @@ public class Boggle {
         
         @Override
         public int compare(String o1, String o2) {
-            if (o1 == o2) {
+            if (o1.equals(o2)) {
                 return o2.compareTo(o1);
             }
             return o1.length() - o2.length();
@@ -57,8 +56,7 @@ public class Boggle {
                 dfs(b, words, marked, n, prefix);
             }
         }
-        List<String> topK = topK(words, k);
-        return topK;
+        return topK(words, k);
     }
     
     private static List<String> topK(MaxPQ<String> words, int k) {
@@ -88,8 +86,7 @@ public class Boggle {
         for (Board.Node neighbor : neighbors) {
             if (!marked.contains(neighbor)) {
                 n = neighbor;
-                List<Board.Node> tempMarked = new ArrayList<>();
-                tempMarked.addAll(marked);
+                List<Board.Node> tempMarked = new ArrayList<>(marked);
                 tempMarked.add(n);
                 String prefixTemp = prefix;
                 prefixTemp += n.ch.toString();
@@ -100,8 +97,7 @@ public class Boggle {
     
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        Boggle g = new Boggle();
-        List<String> res = g.solve(7, "smallBoard.txt");
+        List<String> res = Boggle.solve(7, "smallBoard.txt");
         System.out.println(res);
         long endTime = System.currentTimeMillis();
         System.out.println(endTime - startTime);
