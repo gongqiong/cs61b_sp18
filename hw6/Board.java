@@ -66,14 +66,4 @@ public class Board {
         }
         return neighbors;
     }
-    
-    public static void main(String[] args) {
-        Board b = new Board("exampleBoard.txt");
-        Node n = b.new Node(0, 0);
-        Node n2 = b.new Node(0, 0);
-        StdOut.print(n.equals(n2));
-        List<Node> l = new ArrayList<>();
-        l.add(n);
-        StdOut.print(l.contains(n2));
-    }
 }

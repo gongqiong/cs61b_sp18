@@ -30,28 +30,31 @@ public class Trie {
     
     // check if trie contains word s.
     public boolean containWord(String s) {
-        Node n = root;
-        for (int i = 0; i < s.length(); i += 1) {
-            char c = s.charAt(i);
-            if (!n.children.containsKey(c)) {
-                return false;
-            } else {
-                n = n.children.get(c);
-            }
+        Node n = lastNode(s);
+        if (n == null) {
+            return false;
         }
         return n.isEnd;
     }
     
-    // check if trie contains prefix s.
-    public boolean containPrefix(String s) {
+    private Node lastNode(String s) {
         Node n = root;
         for (int i = 0; i < s.length(); i += 1) {
             char c = s.charAt(i);
             if (!n.children.containsKey(c)) {
-                return false;
+                return null;
             } else {
                 n = n.children.get(c);
             }
+        }
+        return n;
+    }
+    
+    // check if trie contains prefix s.
+    public boolean containPrefix(String s) {
+        Node n = lastNode(s);
+        if (n == null) {
+            return false;
         }
         return true;
     }
